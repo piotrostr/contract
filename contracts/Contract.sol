@@ -2,6 +2,16 @@
 
 pragma solidity 0.8.13;
 
-import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Contract is Ownable {}
+contract Contract is ReentrancyGuard, Ownable {
+    constructor() {}
+
+    receive() external payable {}
+
+    function withdraw() external onlyOwner nonReentrant {
+        (bool success, ) = msg.sender.call{ value: address(this).balance.mul(8).div(10) }("");
+        require(success, "withdraw failed");
+    }
+}
