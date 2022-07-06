@@ -21,9 +21,9 @@ task("accounts", "lists accounts", async (_, { ethers }) => {
   }
 });
 
-const accounts = { mnemonic: process.env.MNEMONIC || "" };
+const accounts = [process.env.PRIVATE_KEY || ""];
 
-const infuraKey = process.env.INFURA_KEY
+const infuraKey = process.env.INFURA_KEY;
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -45,8 +45,12 @@ const config: HardhatUserConfig = {
       url: `https://rinkeby.infura.io/v3/${infuraKey}`,
       chainId: 4,
     },
-    hardhat: {
+    mainnet: {
       accounts,
+      url: `https://mainnet.infura.io/v3/${infuraKey}`,
+      chainId: 1,
+    },
+    hardhat: {
       forking: {
         url: `https://mainnet.infura.io/v3/${infuraKey}`,
       },
