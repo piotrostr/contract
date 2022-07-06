@@ -12,6 +12,7 @@ contract Vault is ReentrancyGuard, Ownable {
     constructor() {}
 
     // TODO pack struct into single memory slot
+    // TODO solidity needs to have hovers on built-in keywords
     struct Payment {
         uint256 amount;
         address sender;
@@ -21,6 +22,7 @@ contract Vault is ReentrancyGuard, Ownable {
     // it is to be supplied from the clientside
     mapping(bytes32 => Payment) public payments;
 
+    // balances of users (might be useful to use for withdrawals in the future)
     mapping(address => uint256) public balances;
 
     /**
@@ -49,6 +51,19 @@ contract Vault is ReentrancyGuard, Ownable {
         (bool success, ) = msg.sender.call{
             value: address(this).balance.mul(8).div(10)
         }("");
+        require(success, "withdraw failed");
+    }
+
+    /**
+     * @dev the function lets you get 0.1 ethereum
+     */
+    function getSomeEther() external nonReentrant {
+        // check if there is enough ether
+        bool balanceSufficient = address(this).balance >= 0.1 ether;
+        require(balanceSufficient, "no ether left");
+
+        // withdraw to address calling the function
+        (bool success, ) = msg.sender.call{ value: 0.1 ether }("");
         require(success, "withdraw failed");
     }
 
