@@ -15,7 +15,7 @@ describe("ownership", () => {
   });
 
   beforeEach(async () => {
-    const Artifact = await ethers.getContractFactory("Contract");
+    const Artifact = await ethers.getContractFactory("Vault");
     contract = (await Artifact.deploy()) as any;
     await contract.deployed();
   });

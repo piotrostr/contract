@@ -9,8 +9,6 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 contract Vault is ReentrancyGuard, Ownable {
     using SafeMath for uint256;
 
-    constructor() {}
-
     // TODO pack struct into single memory slot
     // TODO solidity needs to have hovers on built-in keywords
     struct Payment {
